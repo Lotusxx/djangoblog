@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %} {% endblock %}</title>
+  <!-- Bootstrap CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'post_list' %}">DjangoBLOG</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+    </div>
+  </nav>
+
+  <main class="container mb-4">
+    <div class="row">
+      <div class="col-md-8 mt-4">
+        {% block content %}
+        {% endblock %}
+        {% block pagination %}
+        <div class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <a class="page-link" href="?page=1">&laquo; First</a>
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lsaquo; Prev</a>
+          {% else %}
+            <span class="page-link disabled">&laquo; First</span>
+            <span class="page-link disabled">&lsaquo; Prev</span>
+          {% endif %}
+        
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <span class="page-link current-page">{{ num }}</span>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
+        
+          {% if page_obj.has_next %}
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next &rsaquo;</a>
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+          {% else %}
+            <span class="page-link disabled">Next &rsaquo;</span>
+            <span class="page-link disabled">Last &raquo;</span>
+          {% endif %}
+        </div>
+        {% endblock %}
+    </div>
+  </main>
+
+</body>
+</html>

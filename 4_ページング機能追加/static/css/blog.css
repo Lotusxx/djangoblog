@@ -1,0 +1,8 @@
+.pagination .disabled,.pagination .current-page {
+  color: #000;
+}
+
+.pagination .disabled:hover,.pagination .current-page:hover {
+  color: #000;
+  background-color: #fff;
+}
